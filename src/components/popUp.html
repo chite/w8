@@ -1,0 +1,33 @@
+<section class="home__popup card" v-if="open">
+  <p class="card__header">
+    <span class="card__close" @click="close">
+      <i class="fas fa-times"></i>
+    </span>
+  </p>
+  <div class="card__body" v-if="viewType == 'addFolder'">
+    <img class="card__image" src="../assets/addFolder.png" alt="adding image" />
+    <p class="card__title">資料夾名稱</p>
+    <input class="card__input" v-model="folderName" />
+    <button class="card__btn" @click="createFolder">確定</button>
+  </div>
+  <div
+    class="card__body"
+    v-if="viewType == 'addFile'"
+    @drop="handleDrop"
+    @dragover.prevent
+    @dragenter.prevent
+  >
+    <img class="card__image" src="../assets/loadFile.png" alt="adding image" />
+    <p class="card__title">
+      拖放您的檔案、資料夾<br /><br />或<br /><br />
+      <a class="card__link" @click="triggerUpload">瀏覽</a>
+      <input
+        type="file"
+        style="display: none"
+        ref="fileInput"
+        @change="handleUpload"
+      />
+      本機檔案
+    </p>
+  </div>
+</section>

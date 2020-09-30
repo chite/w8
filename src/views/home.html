@@ -1,0 +1,120 @@
+<article class="home">
+  <pop-up
+    :open="open"
+    :viewType="viewType"
+    @close-pop-up="handleClose"
+    @new-folder="addFolder"
+    @new-file="addFile"
+  ></pop-up>
+  <section class="home--3 home--bright">
+    <div class="logo">
+      <img class="logo__pt" alt="logo" src="../assets/logo.png" />
+      <button class="logo__btn">新增</button>
+    </div>
+    <ul class="nav">
+      <li class="nav__item nav__item--focus">我的檔案</li>
+      <li class="nav__item">與我共用</li>
+      <li class="nav__item">已加星號</li>
+      <li class="nav__item">垃圾桶</li>
+    </ul>
+  </section>
+  <section class="home--9">
+    <div class="header">
+      <h3 class="header__title">
+        <span v-if="getParentsPath">
+          <a v-for="(link, i) in getParentsPath">
+            <router-link :to="{path: '', query: { path: link.path }}"
+              >{{link.name}}</router-link
+            >
+            <i
+              class="fas fa-angle-right"
+              v-if="i != getParentsPath.length - 1"
+            ></i> </a
+          ><i class="fas fa-caret-down"></i
+        ></span>
+      </h3>
+      <div class="header__tools">
+        <div class="header__btn btn">
+          <span class="btn__item">
+            <i class="fas fa-list"></i>
+          </span>
+          <span class="btn__item">
+            <i class="fas fa-th-large"></i>
+          </span>
+        </div>
+        <div class="header__search tools">
+          <input class="tools__search" placeholder="⌕" readonly />
+          <span
+            :class="{'tools__filter': true, 'tools__filter--warning': filter}"
+            @click="handleFilter"
+          >
+            <i class="fas fa-filter"></i>
+          </span>
+        </div>
+        <div class="header__image">
+          <img class="shot" alt="shot" src="../assets/shot.png" />
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <h4 class="content__title">資料夾</h4>
+      <ul class="content__files">
+        <li
+          class="content__item folder"
+          v-for="(item, i) in getFolders"
+          @click="enterFolder($event, i)"
+          @mouseover.self="handleHover"
+          @mouseleave.self="handleLeave"
+        >
+          <span class="folder__icon">
+            <i class="fas fa-folder"></i>
+          </span>
+          <p class="folder__name">
+            {{item.name}}
+            <span class="folder__star" @click="handleStar($event, 'folder', i)">
+              <i
+                :class="{
+                'fas fa-star folder--warning': item.star,
+                'far fa-star': !item.star
+              }"
+              ></i>
+            </span>
+          </p>
+        </li>
+        <li class="content__add" @click="handleOpen($event, 'folder')">
+          <span>新增</span>
+        </li>
+      </ul>
+      <h4 class="content__title">檔案</h4>
+      <ul class="content__files">
+        <li
+          class="content__item file"
+          v-for="(item, i) in getFiles"
+          @mouseover.self="handleHover"
+          @mouseleave.self="handleLeave"
+        >
+          <h3 class="file__message" v-if="item.info">{{item.info}}</h3>
+          <a :href="item.link" :download="!item.info" target="_blank">
+            <span class="file__icon">
+              <i class="fas fa-file"></i>
+            </span>
+            <p class="file__name">
+              {{item.name}}
+              <span class="file__star" @click="handleStar($event, 'file', i)">
+                <i
+                  :class="{
+                'fas fa-star file--warning': item.star,
+                'far fa-star': !item.star
+              }"
+                ></i>
+              </span>
+            </p>
+          </a>
+        </li>
+        <li class="content__add" @click="handleOpen($event, 'file')">
+          <span>新增</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</article>

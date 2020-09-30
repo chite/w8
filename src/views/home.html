@@ -94,7 +94,23 @@
           @mouseleave.self="handleLeave"
         >
           <h3 class="file__message" v-if="item.info">{{item.info}}</h3>
-          <a :href="item.link" :download="!item.info" target="_blank">
+          <a :href="item.link" target="_blank" v-if="item.info">
+            <span class="file__icon">
+              <i class="fas fa-file"></i>
+            </span>
+            <p class="file__name">
+              {{item.name}}
+              <span class="file__star" @click="handleStar($event, 'file', i)">
+                <i
+                  :class="{
+                'fas fa-star file--warning': item.star,
+                'far fa-star': !item.star
+              }"
+                ></i>
+              </span>
+            </p>
+          </a>
+          <a :href="item.link" :download="item.name" v-else>
             <span class="file__icon">
               <i class="fas fa-file"></i>
             </span>

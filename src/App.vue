@@ -25,7 +25,7 @@ export default {
 </script>
 <style>
 html{
-  font-size: 14px;
+  font-size: 12px;
 }
 body {
   padding: 0;
